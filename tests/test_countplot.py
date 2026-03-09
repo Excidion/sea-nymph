@@ -94,6 +94,44 @@ class TestHue:
 
 
 # ---------------------------------------------------------------------------
+# Stat
+# ---------------------------------------------------------------------------
+
+class TestStat:
+    def _data(self):
+        # A:2, B:2, C:2 — 6 total, easy math
+        return _df({"group": ["A", "A", "B", "B", "C", "C"]})
+
+    def test_stat_count_default(self):
+        out = countplot(self._data(), x="group").render()
+        assert "bar [2, 2, 2]" in out
+
+    def test_stat_proportion(self):
+        out = countplot(self._data(), x="group", stat="proportion").render()
+        assert "bar [0.3333" in out
+
+    def test_stat_probability(self):
+        out = countplot(self._data(), x="group", stat="probability").render()
+        assert "bar [0.3333" in out
+
+    def test_stat_percent(self):
+        out = countplot(self._data(), x="group", stat="percent").render()
+        assert "bar [33.333" in out
+
+    def test_stat_axis_label_x(self):
+        out = countplot(self._data(), x="group", stat="percent").render()
+        assert '"Percent"' in out
+
+    def test_stat_axis_label_y(self):
+        out = countplot(self._data(), y="group", stat="proportion").render()
+        assert '"Proportion"' in out
+
+    def test_stat_invalid(self):
+        with pytest.raises(ValueError, match="stat must be"):
+            countplot(self._data(), x="group", stat="mean")
+
+
+# ---------------------------------------------------------------------------
 # Errors
 # ---------------------------------------------------------------------------
 
