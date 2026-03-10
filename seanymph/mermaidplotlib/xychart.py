@@ -76,27 +76,36 @@ class XYChart:
         self._set_x_axis(y)
         return self._add_series("bar", width, horizontal=True, color=color)
 
+    @staticmethod
+    def _check_evenly_spaced(axis: list) -> None:
+        try:
+            floats = [float(v) for v in axis]
+        except (TypeError, ValueError):
+            return
+        if len(floats) > 1:
+            gaps = [floats[i + 1] - floats[i] for i in range(len(floats) - 1)]
+            if max(gaps) - min(gaps) > 1e-9 * abs(floats[-1] - floats[0]):
+                raise ValueError(
+                    f"Numeric axis values are not evenly spaced: {floats}. "
+                    "Mermaid xychart places points equidistantly, which would misrepresent the data."
+                )
+
     def line(self, x, y, color: str | None = None) -> XYChart:
         if not isinstance(x, list):
             x = list(x)
-        try:
-            x_floats = [float(v) for v in x]
-        except (TypeError, ValueError):
-            pass
-        else:
-            if len(x_floats) > 1:
-                gaps = [x_floats[i + 1] - x_floats[i] for i in range(len(x_floats) - 1)]
-                if max(gaps) - min(gaps) > 1e-9 * abs(x_floats[-1] - x_floats[0]):
-                    raise ValueError(
-                        f"Numeric x values are not evenly spaced: {x_floats}. "
-                        "Mermaid xychart places points equidistantly, which would misrepresent the data."
-                    )
-
+        self._check_evenly_spaced(x)
         if self._horizontal:
             self._set_x_axis(y)
             return self._add_series("line", x, horizontal=None, color=color)
         self._set_x_axis(x)
         return self._add_series("line", y, horizontal=None, color=color)
+
+    def lineh(self, y, x, color: str | None = None) -> XYChart:
+        if not isinstance(y, list):
+            y = list(y)
+        self._check_evenly_spaced(y)
+        self._set_x_axis(y)
+        return self._add_series("line", x, horizontal=True, color=color)
 
     def _set_x_axis(self, x) -> None:
         x_list = list(x)

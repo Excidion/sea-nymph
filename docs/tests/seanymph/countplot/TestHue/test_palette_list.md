@@ -3,6 +3,6 @@
 xychart-beta
     x-axis [X, Y]
     y-axis "Count"
-    bar [2, 1]
     bar [1, 2]
+    bar [2, 1]
 ```

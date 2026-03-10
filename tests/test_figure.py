@@ -117,6 +117,22 @@ class TestCategoricalHorizontal:
         out = fig.render()
         assert 'y-axis "Value" 0 --> 5' in out
 
+    def test_lineh(self):
+        fig = XYChart().lineh(self.x, self.y)
+        self._figures.append(fig)
+        out = fig.render()
+        assert "xychart-beta horizontal" in out
+        assert "x-axis [A, B, C]" in out
+        assert "line [1, 2, 3]" in out
+
+    def test_barh_and_lineh(self):
+        fig = XYChart().barh(self.x, self.y).lineh(self.x, [4.0, 5.0, 6.0])
+        self._figures.append(fig)
+        out = fig.render()
+        assert "xychart-beta horizontal" in out
+        assert "bar [1, 2, 3]" in out
+        assert "line [4, 5, 6]" in out
+
 
 # ---------------------------------------------------------------------------
 # Numeric x — vertical
