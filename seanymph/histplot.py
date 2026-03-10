@@ -9,18 +9,19 @@ _VALID_STATS = ("count", "frequency", "probability", "proportion", "percent", "d
 
 
 def _compute_bin_edges(
-    values: list[float],
+    data,
+    num_col: str,
     bins,
     binwidth: float | None,
     binrange: tuple | None,
     discrete: bool,
 ) -> list[float]:
     if discrete:
-        unique_vals = sorted(set(values))
+        unique_vals = data[num_col].unique().sort().to_list()
         return [v - 0.5 for v in unique_vals] + [unique_vals[-1] + 0.5]
 
-    lo = binrange[0] if binrange else min(values)
-    hi = binrange[1] if binrange else max(values)
+    lo = float(binrange[0]) if binrange else float(data[num_col].min())
+    hi = float(binrange[1]) if binrange else float(data[num_col].max())
 
     if not isinstance(bins, int):
         edges = [float(e) for e in bins]
@@ -36,15 +37,6 @@ def _compute_bin_edges(
     n = bins if binwidth is None else max(1, round((hi - lo) / binwidth))
     width = (hi - lo) / n
     return [lo + i * width for i in range(n + 1)]
-
-
-def _assign_bin(value: float, edges: list[float]) -> int | None:
-    if value < edges[0] or value > edges[-1]:
-        return None
-    for i in range(len(edges) - 1):
-        if value < edges[i + 1]:
-            return i
-    return len(edges) - 2  # right edge of last bin is closed
 
 
 def _fmt(v: float) -> str:
@@ -79,33 +71,37 @@ def histplot(
         if col not in data.columns:
             raise ValueError(f"Column {col!r} not found in data")
 
-    all_values = data[num_col].to_list()
-    edges = _compute_bin_edges(all_values, bins, binwidth, binrange, discrete)
+    edges = _compute_bin_edges(data, num_col, bins, binwidth, binrange, discrete)
     n_bins = len(edges) - 1
     binw = edges[1] - edges[0]
-    total_n = len(all_values)
+    lo, hi = edges[0], edges[-1]
+    total_n = len(data)
 
-    if discrete:
-        bin_labels = [_fmt(edges[i] + 0.5) for i in range(n_bins)]
-    else:
-        bin_labels = [_fmt(edges[i]) for i in range(n_bins)]
+    bin_labels = [_fmt(edges[i] + 0.5 if discrete else edges[i]) for i in range(n_bins)]
+
+    counts_df = (
+        data.lazy()
+        .filter(nw.col(num_col).is_between(lo, hi))
+        .with_columns(
+            ((nw.col(num_col) - lo) / binw)
+            .floor()
+            .cast(nw.Int32())
+            .clip(0, n_bins - 1)
+            .alias("__bin__")
+        )
+        .group_by(["__bin__"] + ([hue] if hue else []))
+        .agg(nw.len().alias("__count__"))
+        .collect()
+    )
 
     levels = hue_order or (list(dict.fromkeys(data[hue].to_list())) if hue else [None])
     colors = resolve_palette(palette, levels, color)
 
     chart = XYChart()
     for level, c in zip(levels, colors):
-        level_values = (
-            data.filter(nw.col(hue) == level)[num_col].to_list()
-            if level is not None
-            else all_values
-        )
-
-        counts = [0] * n_bins
-        for v in level_values:
-            b = _assign_bin(v, edges)
-            if b is not None:
-                counts[b] += 1
+        sub = counts_df.filter(nw.col(hue) == level) if level is not None else counts_df
+        bin_to_count = dict(zip(sub["__bin__"].to_list(), sub["__count__"].to_list()))
+        counts = [bin_to_count.get(i, 0) for i in range(n_bins)]
 
         if stat == "count":
             heights = [float(n) for n in counts]

@@ -8,19 +8,17 @@ from seanymph._utils import resolve_palette
 from seanymph.mermaidplotlib.xychart import XYChart
 
 
-def _silverman_bandwidth(values: list[float]) -> float:
-    n = len(values)
-    mean = sum(values) / n
-    std = math.sqrt(sum((v - mean) ** 2 for v in values) / (n - 1))
-    return 1.06 * std * n**-0.2
+def _silverman_bandwidth(data, col: str, bw_adjust: float) -> float:
+    n = len(data)
+    return 1.06 * float(data[col].std()) * n**-0.2 * bw_adjust
 
 
-def _gaussian_kde(
-    grid: list[float], values: list[float], bandwidth: float
-) -> list[float]:
-    scale = 1.0 / (len(values) * bandwidth * math.sqrt(2 * math.pi))
+def _gaussian_kde(data, col: str, grid: list[float], bandwidth: float) -> list[float]:
+    n = len(data)
+    scale = 1.0 / (n * bandwidth * math.sqrt(2 * math.pi))
     return [
-        scale * sum(math.exp(-0.5 * ((xi - v) / bandwidth) ** 2) for v in values)
+        data.select(((-0.5 * ((nw.col(col) - xi) / bandwidth) ** 2).exp()).sum().alias("k"))["k"][0]
+        * scale
         for xi in grid
     ]
 
@@ -51,11 +49,9 @@ def kdeplot(
         if col not in data.columns:
             raise ValueError(f"Column {col!r} not found in data")
 
-    all_values = [float(v) for v in data[num_col].to_list()]
-    bandwidth = _silverman_bandwidth(all_values) * bw_adjust
-
-    lo = min(all_values) - cut * bandwidth
-    hi = max(all_values) + cut * bandwidth
+    global_bw = _silverman_bandwidth(data, num_col, bw_adjust)
+    lo = float(data[num_col].min()) - cut * global_bw
+    hi = float(data[num_col].max()) + cut * global_bw
     step = (hi - lo) / (gridsize - 1)
     grid = [lo + i * step for i in range(gridsize)]
 
@@ -64,23 +60,17 @@ def kdeplot(
 
     chart = XYChart()
     for level, c in zip(levels, colors):
-        level_values = (
-            [float(v) for v in data.filter(nw.col(hue) == level)[num_col].to_list()]
-            if level is not None
-            else all_values
-        )
-        bw = _silverman_bandwidth(level_values) * bw_adjust
-        densities = _gaussian_kde(grid, level_values, bw)
+        sub = data.filter(nw.col(hue) == level) if level is not None else data
+        bw = _silverman_bandwidth(sub, num_col, bw_adjust)
+        densities = _gaussian_kde(sub, num_col, grid, bw)
         if horizontal:
             chart.lineh(grid, densities, color=c)
         else:
             chart.line(grid, densities, color=c)
 
     if horizontal:
-        chart.xlabel("Density")
-        chart.ylabel(num_col)
+        chart.xlabel("Density").ylabel(num_col)
     else:
-        chart.xlabel(num_col)
-        chart.ylabel("Density")
+        chart.xlabel(num_col).ylabel("Density")
 
     return chart
