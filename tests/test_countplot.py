@@ -103,28 +103,34 @@ class TestStat:
         return _df({"group": ["A", "A", "B", "B", "C", "C"]})
 
     def test_stat_count_default(self):
-        out = countplot(self._data(), x="group").render()
-        assert "bar [2, 2, 2]" in out
+        fig = countplot(self._data(), x="group")
+        self._figures.append(fig)
+        assert "bar [2, 2, 2]" in fig.render()
 
     def test_stat_proportion(self):
-        out = countplot(self._data(), x="group", stat="proportion").render()
-        assert "bar [0.3333" in out
+        fig = countplot(self._data(), x="group", stat="proportion")
+        self._figures.append(fig)
+        assert "bar [0.3333" in fig.render()
 
     def test_stat_probability(self):
-        out = countplot(self._data(), x="group", stat="probability").render()
-        assert "bar [0.3333" in out
+        fig = countplot(self._data(), x="group", stat="probability")
+        self._figures.append(fig)
+        assert "bar [0.3333" in fig.render()
 
     def test_stat_percent(self):
-        out = countplot(self._data(), x="group", stat="percent").render()
-        assert "bar [33.333" in out
+        fig = countplot(self._data(), x="group", stat="percent")
+        self._figures.append(fig)
+        assert "bar [33.333" in fig.render()
 
     def test_stat_axis_label_x(self):
-        out = countplot(self._data(), x="group", stat="percent").render()
-        assert '"Percent"' in out
+        fig = countplot(self._data(), x="group", stat="percent")
+        self._figures.append(fig)
+        assert '"Percent"' in fig.render()
 
     def test_stat_axis_label_y(self):
-        out = countplot(self._data(), y="group", stat="proportion").render()
-        assert '"Proportion"' in out
+        fig = countplot(self._data(), y="group", stat="proportion")
+        self._figures.append(fig)
+        assert '"Proportion"' in fig.render()
 
     def test_stat_invalid(self):
         with pytest.raises(ValueError, match="stat must be"):

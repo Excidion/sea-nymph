@@ -1,7 +1,7 @@
 ```mermaid
-%%{init: {'themeVariables': {'xyChart': {'plotColorPalette': '#aaaaaa,#bbbbbb'}}}}%%
+%%{init: {'themeVariables': {'xyChart': {'plotColorPalette': '#bbbbbb,#aaaaaa'}}}}%%
 xychart-beta
     x-axis [X, Y]
-    line [10, 20]
     line [30, 40]
+    line [10, 20]
 ```
