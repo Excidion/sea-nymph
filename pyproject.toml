@@ -33,7 +33,7 @@ ignore-magic = true
 ignore-semiprivate = true
 ignore-module = true
 fail-under = 100
-generate-badge = "docs/img"
+generate-badge = "docs/API Reference"
 
 [tool.pydoclint]
 style = "google"
@@ -44,6 +44,7 @@ arg-type-hints-in-docstring = false
 docs = [
     "zensical>=0.0.23",
     "mkdocstrings[python]>=0.27",
+    "interrogate>=1.7.0",
 ]
 dev = [
     "polars>=1.38.1",
