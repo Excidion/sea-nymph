@@ -27,7 +27,8 @@ def countplot(
     cat_col = x if x is not None else y
     group_cols = [cat_col] + ([hue] if hue else [])
 
-    order = order or list(dict.fromkeys(data[cat_col].to_list()))
+    order = order or data[cat_col].unique(maintain_order=True).to_list()
+    hue_order = hue_order or (data[hue].unique(maintain_order=True).to_list() if hue else None)
     counts = data.lazy().group_by(group_cols).agg(nw.len().alias("__count__")).collect()
 
     if stat != "count":

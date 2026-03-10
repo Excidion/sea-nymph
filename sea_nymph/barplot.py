@@ -37,11 +37,11 @@ def barplot(
 
     agg_expr = estimator if estimator is not None else nw.col(num_col).mean()
     group_cols = [cat_col, hue] if hue else [cat_col]
-    cats = list(order) if order else list(dict.fromkeys(data[cat_col].to_list()))
+    cats = list(order) if order else data[cat_col].unique(maintain_order=True).to_list()
 
     # Stay lazy through the aggregation, collect once on the small result
     result = data.lazy().group_by(group_cols).agg(agg_expr).collect()
-    levels = hue_order or (result[hue].unique(maintain_order=True).to_list() if hue else [None])
+    levels = hue_order or (data[hue].unique(maintain_order=True).to_list() if hue else [None])
     colors = resolve_palette(palette, levels, color)
 
     chart = XYChart()

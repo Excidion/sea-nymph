@@ -28,12 +28,12 @@ def lineplot(
 
     if numeric_x:
         result = data.lazy().group_by(group_cols).agg(agg_expr).sort(x).collect()
-        xs = list(dict.fromkeys(result[x].to_list()))
+        xs = result[x].unique(maintain_order=True).to_list()
     else:
         result = data.lazy().group_by(group_cols).agg(agg_expr).collect()
-        xs = list(dict.fromkeys(data[x].to_list()))
+        xs = data[x].unique(maintain_order=True).to_list()
 
-    levels = hue_order or (list(dict.fromkeys(result[hue].to_list())) if hue else [None])
+    levels = hue_order or (data[hue].unique(maintain_order=True).to_list() if hue else [None])
     colors = resolve_palette(palette, levels, color)
 
     chart = XYChart()

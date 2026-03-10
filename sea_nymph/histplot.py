@@ -94,7 +94,7 @@ def histplot(
         .collect()
     )
 
-    levels = hue_order or (list(dict.fromkeys(data[hue].to_list())) if hue else [None])
+    levels = hue_order or (data[hue].unique(maintain_order=True).to_list() if hue else [None])
     colors = resolve_palette(palette, levels, color)
 
     chart = XYChart()
