@@ -21,6 +21,7 @@ jobs:
         with:
           python-version: 3.x
       - run: pip install zensical
+      - run: cp README.md docs/index.md
       - run: zensical build --clean
       - uses: actions/upload-pages-artifact@v4
         with:
