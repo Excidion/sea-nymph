@@ -8,7 +8,7 @@ from pathlib import Path
 def _format_category(label: str) -> str:
     """Return a Mermaid-safe category label, quoting if necessary."""
     s = str(label)
-    if re.search(r'[\s,\[\]]', s):
+    if re.search(r"[\s,\[\]]", s):
         return f'"{s.replace(chr(34), chr(92) + chr(34))}"'
     return s
 
@@ -28,7 +28,9 @@ class XYChart:
         self._x_categories: list[str] | None = None
         self._x_count: int | None = None  # length for numeric x, since no category list
         self._x_label: str | None = None
-        self._x_min: float | None = None  # Mermaid x-axis range (auto-detected or user override)
+        self._x_min: float | None = (
+            None  # Mermaid x-axis range (auto-detected or user override)
+        )
         self._x_max: float | None = None
         self._y_label: str | None = None
         self._y_min: float | None = None  # Mermaid y-axis range (user-set only)
@@ -116,7 +118,9 @@ class XYChart:
 
         if x_floats is not None:
             x_min, x_max = min(x_floats), max(x_floats)
-            if self._x_min is not None and (self._x_min != x_min or self._x_max != x_max):
+            if self._x_min is not None and (
+                self._x_min != x_min or self._x_max != x_max
+            ):
                 raise ValueError(
                     f"x range [{x_min}, {x_max}] conflicts with existing x-axis range "
                     f"[{self._x_min}, {self._x_max}]"
@@ -132,7 +136,9 @@ class XYChart:
                 )
             self._x_categories = cats
 
-    def _add_series(self, series_type: str, data, horizontal: bool | None, color: str | None = None) -> XYChart:
+    def _add_series(
+        self, series_type: str, data, horizontal: bool | None, color: str | None = None
+    ) -> XYChart:
         if horizontal is not None:
             if self._horizontal is not None and self._horizontal != horizontal:
                 existing = "barh" if self._horizontal else "bar"
@@ -153,7 +159,9 @@ class XYChart:
             coerced.append(f)
         if not coerced:
             raise ValueError("data must not be empty")
-        x_len = len(self._x_categories) if self._x_categories is not None else self._x_count
+        x_len = (
+            len(self._x_categories) if self._x_categories is not None else self._x_count
+        )
         if x_len is not None and len(coerced) != x_len:
             raise ValueError(
                 f"y length {len(coerced)} does not match x-axis length {x_len}"
@@ -179,7 +187,9 @@ class XYChart:
             if self._x_label is not None:
                 parts.append(f'"{self._x_label}"')
             if self._x_min is not None:
-                parts.append(f"{_format_number(self._x_min)} --> {_format_number(self._x_max)}")
+                parts.append(
+                    f"{_format_number(self._x_min)} --> {_format_number(self._x_max)}"
+                )
             return f"    x-axis {' '.join(parts)}"
         return None
 
@@ -190,7 +200,9 @@ class XYChart:
         if self._y_label is not None:
             parts.append(f'"{self._y_label}"')
         if self._y_min is not None:
-            parts.append(f"{_format_number(self._y_min)} --> {_format_number(self._y_max)}")
+            parts.append(
+                f"{_format_number(self._y_min)} --> {_format_number(self._y_max)}"
+            )
         return f"    y-axis {' '.join(parts)}"
 
     def _validate_series_consistency(self) -> None:
@@ -202,7 +214,9 @@ class XYChart:
                 raise ValueError(
                     f"Series {i} ({stype}) has length {len(data)}, expected {expected}"
                 )
-        x_len = len(self._x_categories) if self._x_categories is not None else self._x_count
+        x_len = (
+            len(self._x_categories) if self._x_categories is not None else self._x_count
+        )
         if x_len is not None and x_len != expected:
             raise ValueError(
                 f"x-axis has {x_len} points but series have {expected} values"

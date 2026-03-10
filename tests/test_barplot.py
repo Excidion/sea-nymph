@@ -13,9 +13,15 @@ def _df(data: dict):
 # DataFrame data (long-form)
 # ---------------------------------------------------------------------------
 
+
 class TestDataFrame:
     def _data(self):
-        return _df({"group": ["A", "A", "B", "B", "C", "C"], "value": [1.0, 3.0, 2.0, 4.0, 5.0, 1.0]})
+        return _df(
+            {
+                "group": ["A", "A", "B", "B", "C", "C"],
+                "value": [1.0, 3.0, 2.0, 4.0, 5.0, 1.0],
+            }
+        )
 
     def test_basic_bar(self):
         fig = barplot(self._data(), x="group", y="value")
@@ -51,19 +57,24 @@ class TestDataFrame:
         assert "#ff0000" in out
 
     def test_estimator_sum(self):
-        fig = barplot(self._data(), x="group", y="value", estimator=nw.col("value").sum())
+        fig = barplot(
+            self._data(), x="group", y="value", estimator=nw.col("value").sum()
+        )
         self._figures.append(fig)
         out = fig.render()
         assert "bar [4, 6, 6]" in out
 
     def test_estimator_max(self):
-        fig = barplot(self._data(), x="group", y="value", estimator=nw.col("value").max())
+        fig = barplot(
+            self._data(), x="group", y="value", estimator=nw.col("value").max()
+        )
         self._figures.append(fig)
         out = fig.render()
         assert "bar [3, 4, 5]" in out
 
     def test_returns_xychart(self):
         from sea_nymph.mermaidplotlib import XYChart
+
         fig = barplot(self._data(), x="group", y="value")
         assert isinstance(fig, XYChart)
 
@@ -72,13 +83,16 @@ class TestDataFrame:
 # Hue — multiple bar series
 # ---------------------------------------------------------------------------
 
+
 class TestHue:
     def _data(self):
-        return _df({
-            "category": ["X", "Y", "X", "Y"],
-            "value": [10.0, 20.0, 30.0, 40.0],
-            "group": ["a", "a", "b", "b"],
-        })
+        return _df(
+            {
+                "category": ["X", "Y", "X", "Y"],
+                "value": [10.0, 20.0, 30.0, 40.0],
+                "group": ["a", "a", "b", "b"],
+            }
+        )
 
     def test_hue_produces_two_series(self):
         fig = barplot(self._data(), x="category", y="value", hue="group")
@@ -88,7 +102,10 @@ class TestHue:
 
     def test_hue_order(self):
         fig = barplot(
-            self._data(), x="category", y="value", hue="group",
+            self._data(),
+            x="category",
+            y="value",
+            hue="group",
             hue_order=["b", "a"],
         )
         self._figures.append(fig)
@@ -99,7 +116,10 @@ class TestHue:
 
     def test_palette_list(self):
         fig = barplot(
-            self._data(), x="category", y="value", hue="group",
+            self._data(),
+            x="category",
+            y="value",
+            hue="group",
             palette=["#ff0000", "#00ff00"],
         )
         self._figures.append(fig)
@@ -109,7 +129,10 @@ class TestHue:
 
     def test_palette_dict(self):
         fig = barplot(
-            self._data(), x="category", y="value", hue="group",
+            self._data(),
+            x="category",
+            y="value",
+            hue="group",
             palette={"a": "#aaaaaa", "b": "#bbbbbb"},
         )
         self._figures.append(fig)
@@ -121,6 +144,7 @@ class TestHue:
 # ---------------------------------------------------------------------------
 # Errors
 # ---------------------------------------------------------------------------
+
 
 class TestErrors:
     def test_bad_orient(self):

@@ -19,6 +19,7 @@ def _data():
 # Basic rendering
 # ---------------------------------------------------------------------------
 
+
 class TestBasic:
     def test_basic_x(self):
         fig = histplot(_data(), x="x", bins=3)
@@ -47,12 +48,14 @@ class TestBasic:
 
     def test_returns_xychart(self):
         from sea_nymph.mermaidplotlib import XYChart
+
         assert isinstance(histplot(_data(), x="x", bins=3), XYChart)
 
 
 # ---------------------------------------------------------------------------
 # Bins
 # ---------------------------------------------------------------------------
+
 
 class TestBins:
     def test_bins_int(self):
@@ -95,6 +98,7 @@ class TestBins:
 # Stat
 # ---------------------------------------------------------------------------
 
+
 class TestStat:
     def _data(self):
         # 10 values, 2 bins of width 1: bin0=[0,1) has 4, bin1=[1,2) has 6
@@ -106,12 +110,16 @@ class TestStat:
         assert "bar [4, 6]" in fig.render()
 
     def test_stat_probability(self):
-        fig = histplot(self._data(), x="x", bins=2, binrange=(0.0, 2.0), stat="probability")
+        fig = histplot(
+            self._data(), x="x", bins=2, binrange=(0.0, 2.0), stat="probability"
+        )
         self._figures.append(fig)
         assert "bar [0.4, 0.6]" in fig.render()
 
     def test_stat_proportion(self):
-        fig = histplot(self._data(), x="x", bins=2, binrange=(0.0, 2.0), stat="proportion")
+        fig = histplot(
+            self._data(), x="x", bins=2, binrange=(0.0, 2.0), stat="proportion"
+        )
         self._figures.append(fig)
         assert "bar [0.4, 0.6]" in fig.render()
 
@@ -122,7 +130,9 @@ class TestStat:
 
     def test_stat_frequency(self):
         # frequency = count / binwidth; binwidth=1 so same as count
-        fig = histplot(self._data(), x="x", bins=2, binrange=(0.0, 2.0), stat="frequency")
+        fig = histplot(
+            self._data(), x="x", bins=2, binrange=(0.0, 2.0), stat="frequency"
+        )
         self._figures.append(fig)
         assert "bar [4, 6]" in fig.render()
 
@@ -141,12 +151,15 @@ class TestStat:
 # Hue
 # ---------------------------------------------------------------------------
 
+
 class TestHue:
     def _data(self):
-        return _df({
-            "x":   [0.5, 0.5, 1.5, 1.5, 0.5, 1.5],
-            "grp": ["a", "a", "a", "b", "b", "b"],
-        })
+        return _df(
+            {
+                "x": [0.5, 0.5, 1.5, 1.5, 0.5, 1.5],
+                "grp": ["a", "a", "a", "b", "b", "b"],
+            }
+        )
 
     def test_hue_two_series(self):
         fig = histplot(self._data(), x="x", bins=2, binrange=(0.0, 2.0), hue="grp")
@@ -155,8 +168,12 @@ class TestHue:
 
     def test_hue_order(self):
         fig = histplot(
-            self._data(), x="x", bins=2, binrange=(0.0, 2.0),
-            hue="grp", hue_order=["b", "a"],
+            self._data(),
+            x="x",
+            bins=2,
+            binrange=(0.0, 2.0),
+            hue="grp",
+            hue_order=["b", "a"],
         )
         self._figures.append(fig)
         out = fig.render()
@@ -165,8 +182,12 @@ class TestHue:
 
     def test_palette_list(self):
         fig = histplot(
-            self._data(), x="x", bins=2, binrange=(0.0, 2.0),
-            hue="grp", palette=["#ff0000", "#00ff00"],
+            self._data(),
+            x="x",
+            bins=2,
+            binrange=(0.0, 2.0),
+            hue="grp",
+            palette=["#ff0000", "#00ff00"],
         )
         self._figures.append(fig)
         out = fig.render()
@@ -177,6 +198,7 @@ class TestHue:
 # ---------------------------------------------------------------------------
 # Errors
 # ---------------------------------------------------------------------------
+
 
 class TestErrors:
     def test_both_x_and_y(self):

@@ -12,6 +12,7 @@ def _df(data: dict):
 # DataFrame data
 # ---------------------------------------------------------------------------
 
+
 class TestDataFrame:
     def _data(self):
         return _df({"group": ["A", "A", "B", "B", "B", "C"]})
@@ -44,6 +45,7 @@ class TestDataFrame:
 
     def test_returns_xychart(self):
         from sea_nymph.mermaidplotlib import XYChart
+
         fig = countplot(self._data(), x="group")
         assert isinstance(fig, XYChart)
 
@@ -52,12 +54,15 @@ class TestDataFrame:
 # Hue
 # ---------------------------------------------------------------------------
 
+
 class TestHue:
     def _data(self):
-        return _df({
-            "category": ["X", "X", "Y", "Y", "X", "Y"],
-            "group":    ["a", "a", "a", "b", "b", "b"],
-        })
+        return _df(
+            {
+                "category": ["X", "X", "Y", "Y", "X", "Y"],
+                "group": ["a", "a", "a", "b", "b", "b"],
+            }
+        )
 
     def test_hue_produces_two_series(self):
         fig = countplot(self._data(), x="category", hue="group")
@@ -74,7 +79,9 @@ class TestHue:
 
     def test_palette_list(self):
         fig = countplot(
-            self._data(), x="category", hue="group",
+            self._data(),
+            x="category",
+            hue="group",
             palette=["#ff0000", "#00ff00"],
         )
         self._figures.append(fig)
@@ -84,7 +91,9 @@ class TestHue:
 
     def test_palette_dict(self):
         fig = countplot(
-            self._data(), x="category", hue="group",
+            self._data(),
+            x="category",
+            hue="group",
             palette={"a": "#aaaaaa", "b": "#bbbbbb"},
         )
         self._figures.append(fig)
@@ -96,6 +105,7 @@ class TestHue:
 # ---------------------------------------------------------------------------
 # Stat
 # ---------------------------------------------------------------------------
+
 
 class TestStat:
     def _data(self):
@@ -140,6 +150,7 @@ class TestStat:
 # ---------------------------------------------------------------------------
 # Errors
 # ---------------------------------------------------------------------------
+
 
 class TestErrors:
     def test_both_x_and_y(self):

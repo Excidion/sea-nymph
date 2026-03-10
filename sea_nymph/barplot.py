@@ -41,7 +41,9 @@ def barplot(
 
     # Stay lazy through the aggregation, collect once on the small result
     result = data.lazy().group_by(group_cols).agg(agg_expr).collect()
-    levels = hue_order or (data[hue].unique(maintain_order=True).to_list() if hue else [None])
+    levels = hue_order or (
+        data[hue].unique(maintain_order=True).to_list() if hue else [None]
+    )
     colors = resolve_palette(palette, levels, color)
 
     chart = XYChart()
@@ -49,8 +51,8 @@ def barplot(
         sub = result.filter(nw.col(hue) == level) if level is not None else result
         lookup = dict(zip(sub[cat_col].to_list(), sub[num_col].to_list()))
         heights = [lookup[cat] for cat in cats]
-        chart.barh(cats, heights, color=c) if horizontal else chart.bar(cats, heights, color=c)
+        chart.barh(cats, heights, color=c) if horizontal else chart.bar(
+            cats, heights, color=c
+        )
 
     return chart
-
-

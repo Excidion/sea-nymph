@@ -17,7 +17,9 @@ def _gaussian_kde(data, col: str, grid: list[float], bandwidth: float) -> list[f
     n = len(data)
     scale = 1.0 / (n * bandwidth * math.sqrt(2 * math.pi))
     return [
-        data.select(((-0.5 * ((nw.col(col) - xi) / bandwidth) ** 2).exp()).sum().alias("k"))["k"][0]
+        data.select(
+            ((-0.5 * ((nw.col(col) - xi) / bandwidth) ** 2).exp()).sum().alias("k")
+        )["k"][0]
         * scale
         for xi in grid
     ]
@@ -55,7 +57,9 @@ def kdeplot(
     step = (hi - lo) / (gridsize - 1)
     grid = [lo + i * step for i in range(gridsize)]
 
-    levels = hue_order or (data[hue].unique(maintain_order=True).to_list() if hue else [None])
+    levels = hue_order or (
+        data[hue].unique(maintain_order=True).to_list() if hue else [None]
+    )
     colors = resolve_palette(palette, levels, color)
 
     chart = XYChart()

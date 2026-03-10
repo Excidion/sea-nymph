@@ -7,6 +7,7 @@ from sea_nymph.mermaidplotlib import XYChart
 # Categorical x — vertical
 # ---------------------------------------------------------------------------
 
+
 class TestCategoricalVertical:
     x = ["A", "B", "C"]
     y = [1.0, 2.0, 3.0]
@@ -85,6 +86,7 @@ class TestCategoricalVertical:
 # Categorical x — horizontal
 # ---------------------------------------------------------------------------
 
+
 class TestCategoricalHorizontal:
     x = ["A", "B", "C"]
     y = [1.0, 2.0, 3.0]
@@ -137,6 +139,7 @@ class TestCategoricalHorizontal:
 # ---------------------------------------------------------------------------
 # Numeric x — vertical
 # ---------------------------------------------------------------------------
+
 
 class TestNumericVertical:
     x = [0, 1, 2, 3]
@@ -194,6 +197,7 @@ class TestNumericVertical:
 # Numeric x — horizontal
 # ---------------------------------------------------------------------------
 
+
 class TestNumericHorizontal:
     x = [10, 20, 30]
     y = [5.0, 15.0, 25.0]
@@ -226,11 +230,16 @@ class TestNumericHorizontal:
 # Multi-series
 # ---------------------------------------------------------------------------
 
+
 class TestMultiSeries:
     x = ["Jan", "Feb", "Mar", "Apr"]
 
     def test_two_lines(self):
-        fig = XYChart().line(self.x, [1.0, 2.0, 3.0, 4.0]).line(self.x, [4.0, 3.0, 2.0, 1.0])
+        fig = (
+            XYChart()
+            .line(self.x, [1.0, 2.0, 3.0, 4.0])
+            .line(self.x, [4.0, 3.0, 2.0, 1.0])
+        )
         self._figures.append(fig)
         out = fig.render()
         assert out.count("line") == 2
@@ -238,7 +247,11 @@ class TestMultiSeries:
         assert "line [4, 3, 2, 1]" in out
 
     def test_two_bars(self):
-        fig = XYChart().bar(self.x, [10.0, 20.0, 30.0, 40.0]).bar(self.x, [5.0, 15.0, 25.0, 35.0])
+        fig = (
+            XYChart()
+            .bar(self.x, [10.0, 20.0, 30.0, 40.0])
+            .bar(self.x, [5.0, 15.0, 25.0, 35.0])
+        )
         self._figures.append(fig)
         out = fig.render()
         assert out.count("bar") == 2
@@ -292,6 +305,7 @@ class TestMultiSeries:
 # Number formatting
 # ---------------------------------------------------------------------------
 
+
 class TestNumberFormatting:
     def test_whole_floats_rendered_without_decimal(self):
         fig = XYChart().bar(["A"], [2.0])
@@ -315,6 +329,7 @@ class TestNumberFormatting:
 # ---------------------------------------------------------------------------
 # Colors
 # ---------------------------------------------------------------------------
+
 
 class TestColors:
     x = ["A", "B", "C"]
@@ -369,6 +384,7 @@ class TestColors:
 # ---------------------------------------------------------------------------
 # Validation errors — no figures saved (all tests expect exceptions)
 # ---------------------------------------------------------------------------
+
 
 class TestValidationErrors:
     def test_y_length_mismatch_categorical(self):

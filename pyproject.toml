@@ -32,5 +32,6 @@ docs = [
 ]
 dev = [
     "polars>=1.38.1",
+    "pre-commit-uv>=4.2.1",
     "pytest>=8",
 ]

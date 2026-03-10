@@ -22,6 +22,7 @@ def _series_values(out: str) -> list[float]:
 # Basic rendering
 # ---------------------------------------------------------------------------
 
+
 class TestBasic:
     def test_basic(self):
         fig = kdeplot(_data(), x="x")
@@ -32,6 +33,7 @@ class TestBasic:
 
     def test_returns_xychart(self):
         from sea_nymph.mermaidplotlib import XYChart
+
         assert isinstance(kdeplot(_data(), x="x"), XYChart)
 
     def test_default_gridsize(self):
@@ -63,7 +65,7 @@ class TestBasic:
         fig = kdeplot(_data(), x="x", gridsize=20)
         self._figures.append(fig)
         out = fig.render()
-        assert '"x"' in out        # column name on x-axis
+        assert '"x"' in out  # column name on x-axis
         assert '"Density"' in out  # density on y-axis
 
     def test_axis_labels_horizontal(self):
@@ -71,7 +73,7 @@ class TestBasic:
         self._figures.append(fig)
         out = fig.render()
         assert '"Density"' in out  # density on horizontal axis
-        assert '"x"' in out        # column name on vertical axis
+        assert '"x"' in out  # column name on vertical axis
 
     def test_cut_extends_range(self):
         # cut=0 → grid starts at min(data), cut=3 → grid extends beyond
@@ -91,12 +93,15 @@ class TestBasic:
 # Hue
 # ---------------------------------------------------------------------------
 
+
 class TestHue:
     def _data(self):
-        return _df({
-            "x":   [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0],
-            "grp": ["a", "a", "a", "a", "b", "b", "b", "b"],
-        })
+        return _df(
+            {
+                "x": [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0],
+                "grp": ["a", "a", "a", "a", "b", "b", "b", "b"],
+            }
+        )
 
     def test_hue_two_series(self):
         fig = kdeplot(self._data(), x="x", hue="grp", gridsize=20)
@@ -114,7 +119,9 @@ class TestHue:
         assert b_values.index(max(b_values)) > a_values.index(max(a_values))
 
     def test_palette_list(self):
-        fig = kdeplot(self._data(), x="x", hue="grp", palette=["#ff0000", "#00ff00"], gridsize=20)
+        fig = kdeplot(
+            self._data(), x="x", hue="grp", palette=["#ff0000", "#00ff00"], gridsize=20
+        )
         self._figures.append(fig)
         out = fig.render()
         assert "#ff0000" in out
@@ -122,7 +129,9 @@ class TestHue:
 
     def test_palette_dict(self):
         fig = kdeplot(
-            self._data(), x="x", hue="grp",
+            self._data(),
+            x="x",
+            hue="grp",
             palette={"a": "#aaaaaa", "b": "#bbbbbb"},
             gridsize=20,
         )
@@ -135,6 +144,7 @@ class TestHue:
 # ---------------------------------------------------------------------------
 # Errors
 # ---------------------------------------------------------------------------
+
 
 class TestErrors:
     def test_missing_column(self):

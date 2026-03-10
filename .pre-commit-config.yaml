@@ -1,0 +1,34 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.9.10
+    hooks:
+      - id: ruff-format
+      - id: ruff
+
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.6.6
+    hooks:
+      - id: uv-lock
+
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: uv run pytest
+        language: system
+        pass_filenames: false
+        always_run: true
+
+      - id: zensical-build
+        name: zensical build
+        entry: uv run zensical build --clean
+        language: system
+        pass_filenames: false
+        always_run: true
+
+      - id: uv-build
+        name: uv build
+        entry: uv build
+        language: system
+        pass_filenames: false
+        always_run: true

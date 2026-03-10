@@ -33,7 +33,9 @@ def lineplot(
         result = data.lazy().group_by(group_cols).agg(agg_expr).collect()
         xs = data[x].unique(maintain_order=True).to_list()
 
-    levels = hue_order or (data[hue].unique(maintain_order=True).to_list() if hue else [None])
+    levels = hue_order or (
+        data[hue].unique(maintain_order=True).to_list() if hue else [None]
+    )
     colors = resolve_palette(palette, levels, color)
 
     chart = XYChart()
@@ -43,5 +45,3 @@ def lineplot(
         chart.line(xs, [lookup[xi] for xi in xs], color=c)
 
     return chart
-
-

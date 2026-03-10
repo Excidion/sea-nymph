@@ -13,9 +13,12 @@ def _df(data: dict):
 # DataFrame data (long-form)
 # ---------------------------------------------------------------------------
 
+
 class TestDataFrame:
     def _data(self):
-        return _df({"x": ["A", "A", "B", "B", "C", "C"], "y": [1.0, 3.0, 2.0, 4.0, 5.0, 1.0]})
+        return _df(
+            {"x": ["A", "A", "B", "B", "C", "C"], "y": [1.0, 3.0, 2.0, 4.0, 5.0, 1.0]}
+        )
 
     def test_basic_line(self):
         fig = lineplot(self._data(), x="x", y="y")
@@ -25,7 +28,9 @@ class TestDataFrame:
         assert "line [2, 3, 3]" in out  # (1+3)/2=2, (2+4)/2=3, (5+1)/2=3
 
     def test_numeric_x_sorted(self):
-        fig = lineplot(_df({"x": [3.0, 1.0, 2.0], "y": [30.0, 10.0, 20.0]}), x="x", y="y")
+        fig = lineplot(
+            _df({"x": [3.0, 1.0, 2.0], "y": [30.0, 10.0, 20.0]}), x="x", y="y"
+        )
         self._figures.append(fig)
         out = fig.render()
         assert "line [10, 20, 30]" in out
@@ -44,6 +49,7 @@ class TestDataFrame:
 
     def test_returns_xychart(self):
         from sea_nymph.mermaidplotlib import XYChart
+
         fig = lineplot(self._data(), x="x", y="y")
         assert isinstance(fig, XYChart)
 
@@ -52,13 +58,16 @@ class TestDataFrame:
 # Hue — multiple line series
 # ---------------------------------------------------------------------------
 
+
 class TestHue:
     def _data(self):
-        return _df({
-            "category": ["X", "Y", "X", "Y"],
-            "value": [10.0, 20.0, 30.0, 40.0],
-            "group": ["a", "a", "b", "b"],
-        })
+        return _df(
+            {
+                "category": ["X", "Y", "X", "Y"],
+                "value": [10.0, 20.0, 30.0, 40.0],
+                "group": ["a", "a", "b", "b"],
+            }
+        )
 
     def test_hue_produces_two_series(self):
         fig = lineplot(self._data(), x="category", y="value", hue="group")
@@ -68,7 +77,10 @@ class TestHue:
 
     def test_hue_order(self):
         fig = lineplot(
-            self._data(), x="category", y="value", hue="group",
+            self._data(),
+            x="category",
+            y="value",
+            hue="group",
             hue_order=["b", "a"],
         )
         self._figures.append(fig)
@@ -77,7 +89,10 @@ class TestHue:
 
     def test_palette_list(self):
         fig = lineplot(
-            self._data(), x="category", y="value", hue="group",
+            self._data(),
+            x="category",
+            y="value",
+            hue="group",
             palette=["#ff0000", "#00ff00"],
         )
         self._figures.append(fig)
@@ -87,7 +102,10 @@ class TestHue:
 
     def test_palette_dict(self):
         fig = lineplot(
-            self._data(), x="category", y="value", hue="group",
+            self._data(),
+            x="category",
+            y="value",
+            hue="group",
             palette={"a": "#aaaaaa", "b": "#bbbbbb"},
         )
         self._figures.append(fig)
@@ -99,6 +117,7 @@ class TestHue:
 # ---------------------------------------------------------------------------
 # Errors
 # ---------------------------------------------------------------------------
+
 
 class TestErrors:
     def test_missing_column(self):
