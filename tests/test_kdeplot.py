@@ -3,7 +3,7 @@ import re
 import pytest
 import polars as pl
 
-from seanymph import kdeplot
+from sea_nymph import kdeplot
 
 
 def _df(data: dict):
@@ -31,7 +31,7 @@ class TestBasic:
         assert "line" in out
 
     def test_returns_xychart(self):
-        from seanymph.mermaidplotlib import XYChart
+        from sea_nymph.mermaidplotlib import XYChart
         assert isinstance(kdeplot(_data(), x="x"), XYChart)
 
     def test_default_gridsize(self):

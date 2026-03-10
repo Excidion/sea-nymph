@@ -2,7 +2,7 @@ import pytest
 import narwhals as nw
 import polars as pl
 
-from seanymph import lineplot
+from sea_nymph import lineplot
 
 
 def _df(data: dict):
@@ -43,7 +43,7 @@ class TestDataFrame:
         assert "#ff0000" in out
 
     def test_returns_xychart(self):
-        from seanymph.mermaidplotlib import XYChart
+        from sea_nymph.mermaidplotlib import XYChart
         fig = lineplot(self._data(), x="x", y="y")
         assert isinstance(fig, XYChart)
 

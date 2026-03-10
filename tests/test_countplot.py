@@ -1,7 +1,7 @@
 import pytest
 import polars as pl
 
-from seanymph import countplot
+from sea_nymph import countplot
 
 
 def _df(data: dict):
@@ -43,7 +43,7 @@ class TestDataFrame:
         assert "#ff0000" in out
 
     def test_returns_xychart(self):
-        from seanymph.mermaidplotlib import XYChart
+        from sea_nymph.mermaidplotlib import XYChart
         fig = countplot(self._data(), x="group")
         assert isinstance(fig, XYChart)
 

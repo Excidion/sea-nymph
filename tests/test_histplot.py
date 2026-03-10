@@ -3,7 +3,7 @@ import re
 import pytest
 import polars as pl
 
-from seanymph import histplot
+from sea_nymph import histplot
 
 
 def _df(data: dict):
@@ -46,7 +46,7 @@ class TestBasic:
         assert "bar [2, 2, 2]" in fig.render()
 
     def test_returns_xychart(self):
-        from seanymph.mermaidplotlib import XYChart
+        from sea_nymph.mermaidplotlib import XYChart
         assert isinstance(histplot(_data(), x="x", bins=3), XYChart)
 
 

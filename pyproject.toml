@@ -1,5 +1,5 @@
 [project]
-name = "seanymph"
+name = "sea-nymph"
 version = "0.1.0"
 description = "A matplotlib-style Python library for generating Mermaid diagrams"
 readme = "README.md"

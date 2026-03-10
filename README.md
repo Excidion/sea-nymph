@@ -1,10 +1,10 @@
-# seanymph
+# sea_nymph
 A matplotlib-style Python library for generating Mermaid diagrams
 
 
 ## Usage
 ```python
-from seanymph import XYChart
+from sea_nymph import XYChart
 
 months = ["Jan", "Feb", "Mar", "Apr"]
 fig = XYChart()

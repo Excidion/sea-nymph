@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import narwhals as nw
 
-from seanymph.barplot import barplot
-from seanymph.mermaidplotlib.xychart import XYChart
+from sea_nymph.barplot import barplot
+from sea_nymph.mermaidplotlib.xychart import XYChart
 
 
 @nw.narwhalify

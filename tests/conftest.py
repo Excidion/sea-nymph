@@ -10,7 +10,7 @@ def _module_path(fspath: Path) -> Path:
     stem = fspath.stem.removeprefix("test_")
     if stem == "figure":
         return Path("mermaidplotlib")
-    return Path("seanymph") / stem
+    return Path("sea_nymph") / stem
 
 
 @pytest.fixture(scope="session", autouse=True)

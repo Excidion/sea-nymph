@@ -4,8 +4,8 @@ import math
 
 import narwhals as nw
 
-from seanymph._utils import resolve_palette
-from seanymph.mermaidplotlib.xychart import XYChart
+from sea_nymph._utils import resolve_palette
+from sea_nymph.mermaidplotlib.xychart import XYChart
 
 
 def _silverman_bandwidth(data, col: str, bw_adjust: float) -> float:

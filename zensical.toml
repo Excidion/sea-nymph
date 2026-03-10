@@ -1,11 +1,11 @@
 [project]
-site_name = "seanymph"
+site_name = "sea_nymph"
 site_description = "You know, like mermaids."
 site_author = "Excidion"
 copyright = "Copyright &copy; 2026 Excidion"
 docs_dir="docs"
-repo_url = "https://github.com/Excidion/seanymph"
-repo_name = "Excidion/seanymph"
+repo_url = "https://github.com/Excidion/sea_nymph"
+repo_name = "Excidion/sea_nymph"
 
 [project.theme]
 language = "en"

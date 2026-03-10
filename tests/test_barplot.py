@@ -2,7 +2,7 @@ import pytest
 import narwhals as nw
 import polars as pl
 
-from seanymph import barplot
+from sea_nymph import barplot
 
 
 def _df(data: dict):
@@ -63,7 +63,7 @@ class TestDataFrame:
         assert "bar [3, 4, 5]" in out
 
     def test_returns_xychart(self):
-        from seanymph.mermaidplotlib import XYChart
+        from sea_nymph.mermaidplotlib import XYChart
         fig = barplot(self._data(), x="group", y="value")
         assert isinstance(fig, XYChart)
 

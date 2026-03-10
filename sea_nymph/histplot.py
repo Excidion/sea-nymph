@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import narwhals as nw
 
-from seanymph._utils import resolve_palette
-from seanymph.mermaidplotlib.xychart import XYChart
+from sea_nymph._utils import resolve_palette
+from sea_nymph.mermaidplotlib.xychart import XYChart
 
 _VALID_STATS = ("count", "frequency", "probability", "proportion", "percent", "density")
 
