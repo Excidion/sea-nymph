@@ -5,17 +5,18 @@ Do you want to avoid committing PNGs to git?
 Do you have an (un)reasonable dislike for SVG files?
 Look no further!
 
-**sea-nymph** generates [Mermaid](https://mermaid.js.org/) charts from Python — plain text that renders natively on GitHub, GitLab, and most modern documentation tools. No image files, no binary blobs, just code.
+**sea-nymph** generates [Mermaid](https://mermaid.js.org/) charts from Python — plain text that renders natively on GitHub, GitLab, and most modern documentation tools. No image files, no binary blobs, no xml.
 
 The API is modelled after [seaborn](https://seaborn.pydata.org/): pass a DataFrame, name your columns, get a chart.
+
+sea-nymph uses [narwhals](https://narwhals-dev.github.io/narwhals/) under the hood, so it accepts any DataFrame library — pandas, polars, PySpark, and more.
+Generate your markdown charts with distributed computing.
 
 ## Installation
 
 ```bash
 pip install sea-nymph
 ```
-
-sea-nymph uses [narwhals](https://narwhals-dev.github.io/narwhals/) under the hood, so it accepts any DataFrame library — pandas, polars, PyArrow, and more.
 
 ## High-level API
 
@@ -109,4 +110,3 @@ Mermaid's `xychart-beta` places all data points equidistantly on the axis. This 
 
 - **Line charts** require evenly-spaced numeric x values — sea-nymph raises an error if they are not.
 - **Histograms** require equal-width bins for the same reason — unequal bin widths are rejected.
-- Bar charts are not affected (categories are inherently discrete).
